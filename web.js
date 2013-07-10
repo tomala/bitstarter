@@ -1,11 +1,14 @@
-var app = express.createServer();
+var http = require('http'),
+    fs = require('fs');
 
-app.get('/', function(req, res) {
-    fs.readFile('index.html', function(err, page) {
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.write(page);
-        res.end();
-    });
-}
 
-app.listen(5000);
+fs.readFile('./index.html', function (err, html) {
+    if (err) {
+        throw err; 
+    }       
+    http.createServer(function(request, response) {  
+        response.writeHeader(200, {"Content-Type": "text/html"});  
+        response.write(html);  
+        response.end();  
+    }).listen(5000);
+});
